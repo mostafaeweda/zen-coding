@@ -268,8 +268,47 @@
 		</copy>
 	</target>
 
+	<!-- Plugn for textarea -->
+	<target name="plugin.ace" depends="plugin.generic-full">
+		<mkdir dir="${emmet_build_dir}/ace"/>
+		
+		<concat destfile="${emmet_build_dir}/ace/emmet.js">
+			<filelist dir="${emmet_build_dir}">
+				<file name="emmet-full.js"/>
+			</filelist>
+			<filelist dir="${emmet_plugins_source}/ace">
+				<file name="editor.js"/>
+				<file name="controller.js"/>
+			</filelist>
+		</concat>
+		
+		<compile-js destfile="${emmet_build_dir}/ace/emmet.min.js">
+			<filelist dir="${emmet_build_dir}/ace">
+				<file name="emmet.js"/>
+			</filelist>
+		</compile-js>
+
+		<mkdir dir="${emmet_build_dir}/ace/lib"/>
+		<copy todir="${emmet_build_dir}/ace/lib">
+			<fileset dir="${emmet_plugins_source}/ace/lib"/>
+		</copy>
+
+		<copy todir="${emmet_build_dir}/ace">
+			<filelist dir="${emmet_plugins_source}/ace">
+				<file name="index.html"></file>
+			</filelist>
+		</copy>
+		
+		<zip 
+			basedir="${emmet_build_dir}/ace"
+			compress="yes"
+			level="9"
+			destfile="${emmet_build_dir}/ace/Emmet-ace-v${emmet_version}.zip"
+			excludes="*.zip"/>
+	</target>
+
 	<!-- Main build routine -->
-	<target name="main" depends="plugin.app, plugin.codemirror2, plugin.komodo, plugin.npp, plugin.pspad, plugin.textarea, plugin.chocolat">
+	<target name="main" depends="plugin.app, plugin.codemirror2,  plugin.npp, plugin.pspad, plugin.textarea">
 		<echo>Done</echo>
 	</target>
 </project>
